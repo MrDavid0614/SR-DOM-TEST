@@ -33,7 +33,7 @@ When the page is reloaded, the first thing that it should do is to try to get th
 
 ![alt text](TableJS.jpg "Table")
 
-8) Rows should be selectable. The first column should be a checkbox to select that specific record or multiple records or all the records. This checkbox column should be created by default for all rows.
+8) **Rows should be selectable.** The first column should be a checkbox to select that specific record or multiple records or all the records. This checkbox column should be created by default for all rows.
 Delete button should be disabled by default. Only when at least on row is selected, the Delete button should be active. When clicking on this Delete button, the selected row(s) should be deleted.
 
 
