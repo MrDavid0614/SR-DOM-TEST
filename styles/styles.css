@@ -1,21 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
 #table-container {
   width: 100%;
   max-width: 700px;
-  margin: 0 auto;
+  margin: 10px auto;
 }
+
 #table-container .action-bar {
   display: grid;
   grid-template-areas: "row column nada delete";
   grid-template-columns: 20% 20% 40% 20%;
 }
+
 #table-container .action-bar .btn-delete {
   grid-area: delete;
-  background: rgb(247, 79, 79);
+  background: rgb(250, 141, 141);
+}
+
+#table-container .action-bar .btn-delete:not([disabled]) {
+  cursor: pointer;
+  background: rgb(255, 91, 91);
 }
 
 #table-container .action-bar .btn-delete:not([disabled]):hover {
   cursor: pointer;
-  background: red;
+  background: rgb(255, 0, 0);
 }
 
 #table-container .action-bar .btn-row {
@@ -30,7 +44,7 @@
 
 #table-container .action-bar .btn-column {
   grid-area: column;
-  background: rgb(0, 102, 236);
+  background: rgb(0, 102, 216);
 }
 
 #table-container .action-bar .btn-column:hover {
@@ -47,16 +61,25 @@
   border: none;
   border-radius: 7px;
 }
+
+#table-container .btn:focus {
+
+  outline: none;
+
+}
+
 #table-container table {
   width: 100%;
   border: 1px solid black;
   margin: 10px 0;
   overflow-x: scroll;
 }
+
 #table-container table thead tr {
   font-weight: bold;
   background: #f1f1f1;
 }
+
 #table-container table tr td {
   max-width: 200px;
   overflow: hidden;
@@ -65,5 +88,3 @@
   display: inline-block;
   padding: 5px;
 }
-
-/*# sourceMappingURL=styles.css.map */
