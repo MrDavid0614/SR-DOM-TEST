@@ -1,0 +1,69 @@
+#table-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+#table-container .action-bar {
+  display: grid;
+  grid-template-areas: "row column nada delete";
+  grid-template-columns: 20% 20% 40% 20%;
+}
+#table-container .action-bar .btn-delete {
+  grid-area: delete;
+  background: rgb(247, 79, 79);
+}
+
+#table-container .action-bar .btn-delete:not([disabled]):hover {
+  cursor: pointer;
+  background: red;
+}
+
+#table-container .action-bar .btn-row {
+  grid-area: row;
+  background: rgb(1, 151, 1);
+}
+
+#table-container .action-bar .btn-row:hover {
+  cursor: pointer;
+  background: green;
+}
+
+#table-container .action-bar .btn-column {
+  grid-area: column;
+  background: rgb(0, 102, 236);
+}
+
+#table-container .action-bar .btn-column:hover {
+  cursor: pointer;
+  background-color: blue;
+}
+
+#table-container .btn {
+  height: 50px;
+  padding: 5px;
+  margin-right: 10px;
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 7px;
+}
+#table-container table {
+  width: 100%;
+  border: 1px solid black;
+  margin: 10px 0;
+  overflow-x: scroll;
+}
+#table-container table thead tr {
+  font-weight: bold;
+  background: #f1f1f1;
+}
+#table-container table tr td {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  padding: 5px;
+}
+
+/*# sourceMappingURL=styles.css.map */
