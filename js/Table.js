@@ -1,54 +1,99 @@
 class Table {
 
-    constructor(containerId) {
+    constructor(container) {
 
-        this.containerId = containerId;
-        this.table = null;
+        this.container = container;
         this.rows = [];
         this.columns = [];
-        this.drawTable();
 
-    }
-
-    drawTable() {
-
-        this.table = document.createElement('table');
-        const thead = document.createElement('thead');
-        const row = document.createElement('tr');
-        row.setAttribute('id', 'columns-row')
-        thead.appendChild(row);
-        this.table.appendChild(thead);
-        this.containerId.appendChild(this.table);
     }
 
     addColumn(columnName) {
 
-        const columnsRow = document.querySelector('#columns-row');
-        const column = document.createElement('td');
-        column.innerText = columnName;
-        columnsRow.appendChild(column);
-        this.columns.push(columnName);
+        const firstRow = document.querySelector('#columns-row');
+
+        const newColumn = firstRow.insertCell();
+        newColumn.innerHTML += columnName;
+        // insertBefore(newColumn, firstRow.lastElementChild);
+        const lastColumn = firstRow.children.length - 2;
+
+        firstRow.children[lastColumn].before(newColumn);
+
+        this.columns.push(newColumn)
+
     }
 
-    addRow(rowData) {
+    addRow() {
 
-        const tbody = document.createElement('tbody');
-        const row = document.createElement('tr');
+        if(this.isTableFirstColumn()) {
 
-        rowData.cells.forEach(cell => {
+            const firstRow = this.container.insertRow(0);
 
-            const tableData = document.createElement('td');
-            tableData.innerHTML+= cell.text;
-            
-            row.appendChild(tableData);
-        
-        });
-        
+            firstRow.setAttribute('id', 'columns-row');
 
-        this.table.appendChild(tbody);
-        tbody.appendChild(row);
+            firstRow.insertCell();
+            firstRow.insertCell();
 
-        this.rows.push(rowData);
+            firstRow.children[0].innerHTML += `<td><input type="checkbox" id="checkbox"></td>`;
+            firstRow.children[1].innerHTML += `<i class="fas fa-cog"></i>`
+
+            Array.prototype.forEach.call(firstRow.children, cell => {
+
+                this.columns.push(cell);
+
+            })
+
+        }
+        else {
+
+            const newRow = this.container.insertRow();
+
+            const lastColumn = this.columns.length - 2;
+
+            this.columns.forEach((column, index) => {
+
+                console.log(column)
+                if(index == 0 || index == lastColumn) {
+                    
+                    newRow.innerHTML += column.outerHTML;
+                    return;
+
+                }
+                newRow.insertCell();
+
+            })
+
+        }
+
+    }
+
+    isTableFirstRow() {
+
+        if(this.rows.length === 0) {
+
+            return true;
+        }
+        else {
+
+            return false;
+
+        }
+
+    }
+
+    isTableFirstColumn() {
+
+        if(this.columns.length === 0) {
+
+            return true;
+
+        }
+        else {
+
+            return false;
+
+        }
+
     }
 
 }

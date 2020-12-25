@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tables n Rows</title>
     <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="shortcut icon" href="#" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 </head>
 <body>
     <section id="table-container">
@@ -15,12 +17,43 @@
             <button class="btn btn-column">
                 New Column
             </button>
-            <button class="btn btn-delete" disabled>
-                Delete
-            </button>
         </div>
-        
+
+        <table>
+
+          <tbody id="tbody"></tbody>
+
+        </table>
+
     </section>
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <label>
+            <span>Header</span>
+            <input type="text" id="column-header" placeholder="Header" autocomplete="off">
+          </label>
+
+          <label>
+            <span class="second-label">Type</span>
+            <select name="Type" id="column-type">
+                <option value="text">Text</option>
+                <option value="number">Number</option>
+                <option value="email">Email</option>
+                <option value="link">Link</option>
+
+            </select>
+          </label>
+          
+          <input type="submit" value="Add" class="btn" id="add-column">
+
+        </div>
+      
+      </div>
+
     <script type="module" src="./js/index.js"></script>
 </body>
 </html>

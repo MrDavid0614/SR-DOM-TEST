@@ -5,6 +5,19 @@
 
 }
 
+th, td {
+    border: 1px groove black;
+    min-width: 100px;
+    min-height: 30px;
+    text-align: center;
+}
+
+input:focus, select:focus {
+
+  outline: none;
+
+}
+
 #table-container {
   width: 100%;
   max-width: 700px;
@@ -15,21 +28,6 @@
   display: grid;
   grid-template-areas: "row column nada delete";
   grid-template-columns: 20% 20% 40% 20%;
-}
-
-#table-container .action-bar .btn-delete {
-  grid-area: delete;
-  background: rgb(250, 141, 141);
-}
-
-#table-container .action-bar .btn-delete:not([disabled]) {
-  cursor: pointer;
-  background: rgb(255, 91, 91);
-}
-
-#table-container .action-bar .btn-delete:not([disabled]):hover {
-  cursor: pointer;
-  background: rgb(255, 0, 0);
 }
 
 #table-container .action-bar .btn-row {
@@ -44,15 +42,20 @@
 
 #table-container .action-bar .btn-column {
   grid-area: column;
+  background: rgb(61, 128, 206);
+}
+
+#table-container .action-bar .btn-column:not([disabled]) {
+  grid-area: column;
   background: rgb(0, 102, 216);
 }
 
-#table-container .action-bar .btn-column:hover {
+#table-container .action-bar .btn-column:not([disabled]):hover {
   cursor: pointer;
   background-color: blue;
 }
 
-#table-container .btn {
+.btn {
   height: 50px;
   padding: 5px;
   margin-right: 10px;
@@ -70,14 +73,19 @@
 
 #table-container table {
   width: 100%;
-  border: 1px solid black;
-  margin: 10px 0;
-  overflow-x: scroll;
+  margin: 15px 0;
+  border-collapse: collapse;
+
+}
+
+#table-container table tbody #columns-row {
+
+  font-weight: bold;
+
 }
 
 #table-container table thead tr {
   font-weight: bold;
-  background: #f1f1f1;
 }
 
 #table-container table tr td {
@@ -87,4 +95,108 @@
   white-space: nowrap;
   display: inline-block;
   padding: 5px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding-left: 20%;
+  padding-right: 30%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  display: block;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.modal-content label {
+
+  display: flex;
+  flex-direction: column;
+
+}
+
+.modal-content label span {
+
+  font-family: sans-serif;
+  color: rgb(80, 80, 80);
+  margin-bottom: 10px;
+
+}
+
+.modal-content label .second-label {
+
+  margin-top: 20px;
+
+}
+
+.modal-content label #column-header {
+
+  max-width: 400px;
+  height: 30px;
+  padding: 15px 0 15px 8px;
+  border: 1px solid rgb(195, 195, 195);
+  border-radius: 4px;
+  font-size: 1em;
+
+}
+
+.modal-content label #column-type {
+
+  max-width: 400px;
+  height: 30px;
+  border: 1px solid rgb(195, 195, 195);
+  border-radius: 4px;
+  padding: 1px 10px 1px 5px;
+  font-size: 1em;
+  color: rgb(112, 112, 112);
+  
+}
+
+.modal-content input[type="submit"] {
+
+  min-width: 100px;
+  height: 40px;
+  margin-top: 10px;
+  background-color: #ffffff;
+  color: rgb(90, 90, 90);
+  border: 1px solid rgb(0, 172, 0);
+  font-size: 0.9em;
+
+}
+
+.modal-content input[type="submit"]:hover {
+
+  cursor: pointer;
+  background-color: rgb(0, 172, 0);
+  color: #ffffff;
+
+}
+
+.close {
+  z-index: 1;
+  margin-top: -5px;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
