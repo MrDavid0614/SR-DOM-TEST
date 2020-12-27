@@ -6,6 +6,7 @@ export function chargeListeners() {
 
         global.addRow();
         global.newColumnBtn.disabled = false;
+        global.deleteBtn.disabled = false;
     
     });
     

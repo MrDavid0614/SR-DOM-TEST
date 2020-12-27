@@ -6,5 +6,5 @@ chargeListeners();
 if (global.isTableFirstRow()) {
 
     global.newColumnBtn.disabled = true;
-
+    
 }

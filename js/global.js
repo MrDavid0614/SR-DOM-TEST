@@ -2,6 +2,7 @@ export const tbody = document.querySelector('#tbody');
 
 export const addRowBtn = document.querySelector('.btn-row');
 export const newColumnBtn = document.querySelector('.btn-column');
+export const deleteBtn = document.querySelector('.btn-delete');
 
 export const modal = document.querySelector('.modal');
 export const columnHeader = document.querySelector('#column-header');
@@ -16,12 +17,6 @@ export function isTableFirstRow() {
 
 }
 
-// export function isTableFirstColumn() {
-    
-//     return tbody.rows.cells === 0;
-
-// }
-
 export function addRow() {
 
     const row = document.createElement('tr');
@@ -33,6 +28,7 @@ export function addRow() {
     if(isTableFirstRow()) {
 
         row.setAttribute('id', 'columns-row');
+        input.setAttribute('id', 'main-checkbox');
 
     }
 
@@ -48,8 +44,6 @@ export function addRow() {
     if(!isTableFirstRow()) {
 
         const firstRow = document.querySelector('#columns-row');
-
-        console.log(firstRow.cells.length);
 
         Array.prototype.forEach.call(firstRow.cells, (column, index) => {
 
@@ -79,5 +73,23 @@ export function addColumn(columnText) {
     cell.innerText += columnText;
 
     firstRow.insertBefore(cell, firstRow.lastElementChild);
+
+    Array.prototype.forEach.call(tbody.rows, (row, index) => {
+
+        const cell = document.createElement('td');
+
+        if(index === 0) {
+
+            return;
+
+        }
+
+        if(firstRow.cells.length > row.cells.length) {
+
+            row.insertBefore(cell, row.lastElementChild);
+
+        }
+
+    })
 
 }

@@ -42,7 +42,7 @@ input:focus, select:focus {
 
 #table-container .action-bar .btn-column {
   grid-area: column;
-  background: rgb(61, 128, 206);
+  background: rgb(90, 146, 209);
 }
 
 #table-container .action-bar .btn-column:not([disabled]) {
@@ -57,7 +57,12 @@ input:focus, select:focus {
 
 #table-container .action-bar .btn-delete {
   grid-area: delete;
-  background: rgb(247, 79, 79);
+  background: rgb(240, 115, 115);
+}
+
+#table-container .action-bar .btn-delete:not([disabled]) {
+  grid-area: delete;
+  background: rgb(246, 65, 65);
 }
 
 #table-container .action-bar .btn-delete:not([disabled]):hover {
