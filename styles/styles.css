@@ -55,6 +55,16 @@ input:focus, select:focus {
   background-color: blue;
 }
 
+#table-container .action-bar .btn-delete {
+  grid-area: delete;
+  background: rgb(247, 79, 79);
+}
+
+#table-container .action-bar .btn-delete:not([disabled]):hover {
+  cursor: pointer;
+  background: red;
+}
+
 .btn {
   height: 50px;
   padding: 5px;
