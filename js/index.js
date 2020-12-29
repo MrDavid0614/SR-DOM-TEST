@@ -1,9 +1,10 @@
-import * as global from './global.js';
+import {global} from './global.js';
 import {chargeListeners} from './listeners.js';
+import {table} from './table.js';
 
 chargeListeners();
 
-if (global.isTableFirstRow()) {
+if (table.isTableFirstRow()) {
 
     global.newColumnBtn.disabled = true;
     
