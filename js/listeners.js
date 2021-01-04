@@ -11,37 +11,29 @@ export function chargeListeners() {
     
     });
     
-    global.newColumnBtn.addEventListener('click', () => {
-        
-        global.modal.style.display = "block";
+    global.newColumnBtn.addEventListener('click', showModal);
     
-    });
+    global.submitColumn.addEventListener('click', createColumn);
     
-    global.submitColumn.addEventListener('click', e => {
-    
-        if(global.columnHeader.value) {
-            
-            table.addColumn(global.columnHeader.value, global.columnType.value);
-            global.modal.style.display = "none"
-    
-        }
-        else {
-    
-            alert("You should put a header before add column.");
-    
-        }
-    
-    });
-    
-    global.close.addEventListener('click', () => {
-    
-        global.modal.style.display = "none";
-    
-    });
+    global.closeBtn.addEventListener('click', closeModal);
 
-    global.deleteBtn.addEventListener('click', () => {
+    global.deleteBtn.addEventListener('click', deleteSelectedRows)
+    
+    window.onclick = e => {
 
-        const allCheckbox = document.querySelectorAll('input[type="checkbox"]');
+        if(e.target === global.modal) {
+    
+            closeModal();
+
+        }
+
+    };
+    
+}
+
+function deleteSelectedRows() {
+    
+    const allCheckbox = document.querySelectorAll('input[type="checkbox"]');
 
         if(document.querySelector('#main-checkbox').checked) {
 
@@ -80,16 +72,32 @@ export function chargeListeners() {
 
         }
 
-    })
-    
-    window.onclick = e => {
-    
-        if(e.target === global.modal) {
-    
-            global.modal.style.display = "none";
-    
-        }
-    
+}
+
+function createColumn() {
+
+    if(global.columnHeader.value) {
+            
+        table.addColumn(global.columnHeader.value, global.columnType.value);
+        global.modal.style.display = "none"
+
     }
+    else {
+
+        alert("You should put a header before add a column.");
+
+    }
+
+}
+
+function showModal() {
     
+    global.modal.style.display = "block";
+
+}
+
+function closeModal() {
+
+    global.modal.style.display = "none";
+
 }

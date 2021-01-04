@@ -23,7 +23,7 @@ If it's a text, it should left align it.
 If a cell is of type number, it should not allow any text, url, etc. Only number should be allowed. If a cell is of type email, a valid email format should be provided or it won't accept the edit. If it's of type link, a valid url needs to be provided or it will not accept the edit, showing a message saying it.
 
 
-1) **Columns and Rows should be reorderable:** when you click on a column header and start to drag it, that column should be able to move from one position to another. For example, if we have columns Id, Name, Age, and I want to move Age to the second position, I should be able to hold it and drag it to the second position so the columns should now be: Id, Age, Name.
+6) **Columns and Rows should be reorderable:** when you click on a column header and start to drag it, that column should be able to move from one position to another. For example, if we have columns Id, Name, Age, and I want to move Age to the second position, I should be able to hold it and drag it to the second position so the columns should now be: Id, Age, Name.
 When pressing Ctrl + left click on a row, this row should now be draggable and can be moved to another position.
 
 

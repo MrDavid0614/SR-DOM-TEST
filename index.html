@@ -7,17 +7,18 @@
     <link rel="stylesheet" href="./styles/styles.css">
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    
 </head>
 <body>
     <section id="table-container">
         <div class="action-bar">
-            <button class="btn btn-row">
+            <button class="btn btn-row" id="btn-row">
                 New Row
             </button>
-            <button class="btn btn-column">
+            <button class="btn btn-column" id="btn-column">
                 New Column
             </button>
-            <button class="btn btn-delete" disabled>
+            <button class="btn btn-delete" id="btn-delete" disabled>
                 Delete
             </button>
             
@@ -33,7 +34,7 @@
 
     <div id="myModal" class="modal">
 
-        <!-- Modal content -->
+
         <div class="modal-content">
           <span class="close">&times;</span>
           <label>
@@ -57,7 +58,7 @@
         </div>
       
       </div>
-
-    <script type="module" src="./js/index.js"></script>
+  
+    <script type="module" src="./js/main.js"></script>
 </body>
 </html>
