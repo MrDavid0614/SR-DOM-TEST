@@ -284,12 +284,18 @@ function addEventsToRowCells() {
                             rowCell.setAttribute('contenteditable', 'false');
                             tableToJSON(tbody);
 
+                            console.log("El texto está vacío");
+
                         }
+    
+                    }
+                    else {
 
                         if(!validateInput(e.target)) {
 
                             alert(`The text in cell isn't of type ${e.target.getAttribute('data-value')}, please solve that.`);
-    
+                            console.log("El input no es del tipo que debería ser");
+
                         }
                         else {
     
@@ -297,12 +303,12 @@ function addEventsToRowCells() {
                             tableToJSON(tbody);
     
                         }
-    
-                        }
 
                     }
-                    
+
                 }
+                    
+            }
             
             rowCell.ondblclick = e => {
 
