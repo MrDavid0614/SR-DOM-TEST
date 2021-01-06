@@ -1,4 +1,4 @@
-**# SR-DOM-TEST
+# SR-DOM-TEST
 
 ![alt text](table.jpg "Table")
 
