@@ -1,5 +1,5 @@
 import {global} from './global.js';
-import {validator} from './validator.js';
+import {isEmail, isUrl} from './validator.js';
 
 const tbody = global.tbody;
 
@@ -18,13 +18,121 @@ function isTableFirstRow(row = {}) {
 
 }
 
-function desactivateNewColumnBtn () {
+function desactivateNewColumnBtn() {
 
     if (isTableFirstRow()) {
 
         global.newColumnBtn.disabled = true;
         
     }
+
+}
+
+function deleteSelectedRows() {
+    
+    const allCheckbox = document.querySelectorAll('input[type="checkbox"]');
+
+        if(document.querySelector('#main-checkbox').checked) {
+
+            if(confirm('Are you sure of you wanna delete all table rows?')) {
+
+                [].forEach.call(tbody.rows, (row, index) => {
+                    
+                    if(index === 0) return;
+
+                    tbody.removeChild(row);
+
+                })
+
+                tableToJSON(tbody);
+
+            }
+
+        }
+        else {
+
+            allCheckbox.forEach((checkbox, index) => {
+
+                if(checkbox.checked) {
+    
+                    if(confirm(`Are you sure of you wanna delete row ${index + 1}?`)) {
+
+                        tbody.deleteRow(index);
+                        tableToJSON(tbody);
+
+                    }
+    
+                }
+    
+            })
+
+        }
+
+}
+
+function saveTableInLocalStorage(data) {
+    
+    localStorage.setItem('table', JSON.stringify(data));
+
+}
+
+function tableToJSON(tbody) {
+
+    const data = [];
+
+    const headers = [];
+
+    const firstRow = tbody.rows[0];
+
+    [].forEach.call(firstRow.cells, (cell, index) => {
+
+        if(index === 0 || index === firstRow.cells.length - 1) {
+            
+            return;
+
+        }
+
+        headers.push(cell.textContent.trim());
+
+    });
+
+    [].forEach.call(tbody.rows, row => {
+
+        const rowData = {};
+
+        if(isTableFirstRow(row)){
+            return;
+        }
+
+        [].forEach.call(row.cells, (cell, index) => {
+            
+            if(index === row.cells.length - 1) {
+            
+                return;
+    
+            }
+
+            rowData[ headers[index - 1] ] = cell.textContent.trim();
+
+        })
+
+        delete rowData.undefined;
+
+        data.push(rowData);
+    });
+
+    saveTableInLocalStorage(data);
+
+    return data;
+}
+
+function renderTableFromLocalStorage() {
+
+    const table = localStorage.getItem('table');
+    
+    if(table === null || table === undefined) return;
+
+    else if(table.length === 2) return;
 
 }
 
@@ -61,11 +169,33 @@ function selectAllRows(row, input) {
 
 }
 
+function validateInput(element) {
+
+    const dataType = element.getAttribute('data-value');
+
+    const text = element.textContent;
+
+    if(dataType === "number") {
+
+        return !isNaN(text) && !isNaN(parseInt(text));
+
+    }
+    
+    else if(typeof text === dataType) return true;
+
+    else if(dataType === "email") return isEmail(text);
+
+    else if(dataType === "link") return isUrl(text);
+
+    return false;
+}
+
 function addRowsBasedOnFirstRow(firstRow, row) {
     
     [].forEach.call(firstRow.cells, (column, index) => {
 
         const cell = document.createElement('td');
+        cell.setAttribute('data-value', column.getAttribute('data-value'));
 
         if(index === 0 || index === firstRow.cells.length - 1) {
 
@@ -79,11 +209,12 @@ function addRowsBasedOnFirstRow(firstRow, row) {
 
 }
 
-function addColumnCellsToRows(firstRow) {
+function addColumnCellsToRows(firstRow, dataValue) {
 
     [].forEach.call(tbody.rows, row => {
 
         const cell = document.createElement('td');
+        cell.setAttribute('data-value', dataValue);
 
         if(row === firstRow) {
 
@@ -111,6 +242,13 @@ function addEventsToFirstRowCells(firstRow) {
 
         }
 
+        cell.onclick = e => {
+
+            const element = e.target;
+            sortColumn(element, element.getAttribute('data-value'));
+
+        }
+
         cell.oncontextmenu = e => {
 
             console.log(`hola ${cell.outerHTML}`);
@@ -133,27 +271,38 @@ function addEventsToRowCells() {
 
             }
 
-            if(isTableFirstRow(row)) {
-
-                rowCell.onclick = e => {
-
-                    const element = e.target;
-                    sortColumn(element, element.getAttribute('data-value'));
-
-                }
-
-            }
-
             rowCell.onkeydown = e => {
 
                 if(e.keyCode === 13) {
 
-                    rowCell.setAttribute('contenteditable', 'false');
+                    e.preventDefault();
 
+                    if(e.target.textContent === "") {
+
+                        if(confirm("Do you wanna let empty the cell?")) {
+
+                            rowCell.setAttribute('contenteditable', 'false');
+                            tableToJSON(tbody);
+
+                        }
+
+                        if(!validateInput(e.target)) {
+
+                            alert(`The text in cell isn't of type ${e.target.getAttribute('data-value')}, please solve that.`);
+    
+                        }
+                        else {
+    
+                            rowCell.setAttribute('contenteditable', 'false');
+                            tableToJSON(tbody);
+    
+                        }
+    
+                        }
+
+                    }
+                    
                 }
-                
-
-            }
             
             rowCell.ondblclick = e => {
 
@@ -210,7 +359,8 @@ function addRow() {
     tbody.appendChild(row);
 
     addEventsToRowCells();
-
+    console.log(tableToJSON(tbody));
+    renderTableFromLocalStorage();
 }
 
 function addColumn(columnText, columnValue) {
@@ -225,7 +375,7 @@ function addColumn(columnText, columnValue) {
 
     addEventsToFirstRowCells(firstRow);
 
-    addColumnCellsToRows(firstRow);
+    addColumnCellsToRows(firstRow, columnValue);
 
     addEventsToRowCells();
 
@@ -319,6 +469,7 @@ export const table = {
 
     desactivateNewColumnBtn,
     addRow,
-    addColumn
+    addColumn,
+    deleteSelectedRows,
 
 }
