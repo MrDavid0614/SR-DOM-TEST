@@ -2,6 +2,8 @@ import {global} from './global.js';
 import {table} from './table.js';
 
 export function chargeListeners() {
+    
+    document.onload = table.renderTableFromLocalStorage();
 
     global.addRowBtn.addEventListener('click', () => {
 
@@ -34,9 +36,10 @@ export function chargeListeners() {
 function createColumn() {
 
     if(global.columnHeader.value) {
-            
+        
         table.addColumn(global.columnHeader.value, global.columnType.value);
-        global.modal.style.display = "none"
+        global.modal.style.display = "none";
+        global.columnHeader.value = "";
 
     }
     else {

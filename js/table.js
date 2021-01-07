@@ -70,6 +70,16 @@ function deleteSelectedRows() {
 
 }
 
+function elementAppendChildren(element, children) {
+
+    children.forEach(child => {
+
+        element.appendChild(child);
+
+    })
+
+}
+
 function saveTableInLocalStorage(data) {
     
     localStorage.setItem('table', JSON.stringify(data));
@@ -128,11 +138,52 @@ function tableToJSON(tbody) {
 
 function renderTableFromLocalStorage() {
 
-    const table = localStorage.getItem('table');
+    const table = JSON.parse(localStorage.getItem('table'));
     
     if(table === null || table === undefined) return;
 
-    else if(table.length === 2) return;
+    else if(table.length === 0) return;
+
+    table.forEach(row => {
+
+        const properties = Object.keys(row);
+
+        const rowElement = document.createElement('tr');
+        const firstCell = document.createElement('td');
+        const lastCell = document.createElement('td');
+        const checkbox = document.createElement('input');
+        const icon = document.createElement('i');
+
+        if(isTableFirstRow()) {
+
+            rowElement.setAttribute('id', 'columns-row');
+            checkbox.setAttribute('type', 'checkbox');
+            checkbox.setAttribute('id', 'main-checkbox');
+
+            firstCell.appendChild(checkbox);
+            lastCell.appendChild(icon);
+            elementAppendChildren(rowElement, [ firstCell, lastCell ]);
+            
+            properties.forEach(property => {
+
+                const cell = document.createElement('td');
+                cell.textContent = property;
+                rowElement.insertBefore(cell, lastCell);
+
+            })
+
+            selectAllRows(rowElement, checkbox);
+
+            tbody.appendChild(rowElement);
+
+        }
+        else {
+
+
+
+        }
+
+    })
 
 }
 
@@ -365,8 +416,8 @@ function addRow() {
     tbody.appendChild(row);
 
     addEventsToRowCells();
-    console.log(tableToJSON(tbody));
-    renderTableFromLocalStorage();
+    saveTableInLocalStorage(tableToJSON(tbody));
+
 }
 
 function addColumn(columnText, columnValue) {
@@ -473,6 +524,7 @@ function sortColumn(element, dataType) {
 
 export const table = {
 
+    renderTableFromLocalStorage,
     desactivateNewColumnBtn,
     addRow,
     addColumn,
