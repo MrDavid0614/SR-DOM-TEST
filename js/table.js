@@ -116,13 +116,15 @@ function tableToJSON(tbody) {
 
         [].forEach.call(row.cells, (cell, index) => {
             
-            if(index === row.cells.length - 1) {
+            if(index === 0 || index === row.cells.length - 1) {
             
                 return;
     
             }
 
-            rowData[ headers[index - 1] ] = cell.textContent.trim();
+            const objectOfData = { text: cell.textContent, type: cell.getAttribute('data-value')};
+
+            rowData[ headers[index - 1] ] = objectOfData;
 
         })
 
@@ -146,45 +148,45 @@ function renderTableFromLocalStorage() {
 
     table.forEach(row => {
 
-        const properties = Object.keys(row);
-
         const rowElement = document.createElement('tr');
         const firstCell = document.createElement('td');
         const lastCell = document.createElement('td');
         const checkbox = document.createElement('input');
         const icon = document.createElement('i');
+        
+        checkbox.type = "checkbox";
 
+        console.table(row);
+        
         if(isTableFirstRow()) {
 
-            rowElement.setAttribute('id', 'columns-row');
-            checkbox.setAttribute('type', 'checkbox');
-            checkbox.setAttribute('id', 'main-checkbox');
-
+            selectAllRows(rowElement, checkbox);
             firstCell.appendChild(checkbox);
             lastCell.appendChild(icon);
-            elementAppendChildren(rowElement, [ firstCell, lastCell ]);
             
-            properties.forEach(property => {
+            elementAppendChildren(rowElement, [firstCell, lastCell]);
 
-                const cell = document.createElement('td');
-                cell.textContent = property;
-                rowElement.insertBefore(cell, lastCell);
+            Object.keys(row).forEach(key => {
 
-            })
+                const td = document.createElement('td');
+                td.textContent = key;
+                console.log();
+                td.setAttribute('data-value', row[key]['type']);
+                rowElement.insertBefore(td, lastCell);
 
-            selectAllRows(rowElement, checkbox);
-
+            });
+            
             tbody.appendChild(rowElement);
-
+            addRow();
         }
         else {
-
-
+            
+            console.log(row);
 
         }
 
-    })
-
+    });
+    
 }
 
 function selectAllRows(row, input) {

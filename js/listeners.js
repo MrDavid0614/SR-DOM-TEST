@@ -40,7 +40,7 @@ function createColumn() {
         table.addColumn(global.columnHeader.value, global.columnType.value);
         global.modal.style.display = "none";
         global.columnHeader.value = "";
-
+        
     }
     else {
 
