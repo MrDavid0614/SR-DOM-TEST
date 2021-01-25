@@ -141,58 +141,69 @@ function tableToJSON(tbody) {
 function renderTableFromLocalStorage() {
 
     const table = JSON.parse(localStorage.getItem('table'));
-    
+
     if(table === null || table === undefined) return;
 
     else if(table.length === 0) return;
 
-    table.forEach(row => {
+    const rowElement = document.createElement('tr');
+    const firstCell = document.createElement('td');
+    const lastCell = document.createElement('td');
+    const checkbox = document.createElement('input');
+    const icon = document.createElement('i');
+    firstCell.appendChild(checkbox);
+    checkbox.type = "checkbox";
 
-        const rowElement = document.createElement('tr');
-        const firstCell = document.createElement('td');
-        const lastCell = document.createElement('td');
-        const checkbox = document.createElement('input');
-        const icon = document.createElement('i');
-        
-        checkbox.type = "checkbox";
-
-        console.table(row);
-        
-        if(isTableFirstRow()) {
-
-            selectAllRows(rowElement, checkbox);
-            firstCell.appendChild(checkbox);
-            lastCell.appendChild(icon);
-            
-            elementAppendChildren(rowElement, [firstCell, lastCell]);
-
-            Object.keys(row).forEach(key => {
-
-                const td = document.createElement('td');
-                td.textContent = key;
-                console.log();
-                td.setAttribute('data-value', row[key]['type']);
-                rowElement.insertBefore(td, lastCell);
-
-            });
-            
-            tbody.appendChild(rowElement);
-            addRow();
-        }
-        else {
-            
-            console.log(row);
-
-        }
-
-    });
+    elementAppendChildren(rowElement, [firstCell, lastCell]);
     
+
+    if(isTableFirstRow()) {
+
+        rowElement.id = "columns-row";
+        selectAllRows(checkbox);
+
+        Object.getOwnPropertyNames(table[0]).forEach(property => {
+
+            const td = document.createElement('td');
+
+            td.textContent = property;
+            td.setAttribute('data-value', table[0][property].type);
+
+            rowElement.insertBefore(td, lastCell);
+        })
+
+        tbody.appendChild(rowElement);
+        
+    }
+
+    const rows = table.map(data => {
+        
+        const row = document.createElement('tr');
+
+        row.innerHTML += `<tr>
+
+            <td><input type="checkbox"></input></td>
+            ${
+                Object.keys(data).map(property => {
+                    return `<td data-value="${data[property].type}">${data[property].text}</td>`
+                }).join("")
+            }
+            <td><i class="fas fa-cog"></i></td>
+        </tr>`
+
+        return row;
+    })
+
+    rows.forEach(row => {
+        
+        tbody.innerHTML += row.innerHTML;
+    });
+
 }
 
-function selectAllRows(row, input) {
-        
-    row.setAttribute('id', 'columns-row');
-    input.setAttribute('id', 'main-checkbox');
+function selectAllRows(input) {
+
+    input.id = "main-checkbox";
 
     input.onclick = e => {
 
@@ -391,8 +402,8 @@ function addRow() {
     const icon = document.createElement('i');
 
     if(isTableFirstRow()) { 
-
-        selectAllRows(row, input);
+        row.id = "columns-row"
+        selectAllRows(input);
 
     }
 
