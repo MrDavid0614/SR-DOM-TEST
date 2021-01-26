@@ -183,7 +183,9 @@ function renderTableFromLocalStorage() {
             <td><input type="checkbox"></input></td>
             ${
                 Object.keys(data).map(property => {
+
                     return `<td data-value="${data[property].type}">${data[property].text}</td>`
+
                 }).join("")
             }
             <td><i class="fas fa-cog"></i></td>
@@ -198,7 +200,7 @@ function renderTableFromLocalStorage() {
     });
 
     addEventsToFirstRowCells(document.querySelector('#columns-row'));
-
+    addEventsToRowCells();
     global.deleteBtn.disabled = false;
 }
 
@@ -354,13 +356,13 @@ function addEventsToRowCells() {
                     }
                     else {
 
-                        if(!validateInput(e.target)) {
+                       if(!validateInput(e.target)) {
 
                             alert(`The text in cell isn't of type ${e.target.getAttribute('data-value')}, please solve that.`);
 
                         }
                         else {
-    
+                            
                             rowCell.setAttribute('contenteditable', 'false');
                             tableToJSON(tbody);
     
@@ -379,6 +381,17 @@ function addEventsToRowCells() {
 
             }
 
+            if(rowCell.getAttribute('data-value') === "email") {
+                rowCell.onclick = e => {
+                    
+                    if(window.event.ctrlKey) {
+
+                        window.open(`mailto:${rowCell.textContent}`);
+
+                    }
+
+                }
+            }
         })
 
     })
