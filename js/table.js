@@ -149,19 +149,17 @@ function renderTableFromLocalStorage() {
     const rowElement = document.createElement('tr');
     const firstCell = document.createElement('td');
     const lastCell = document.createElement('td');
-    const checkbox = document.createElement('input');
+    const mainCheckbox = document.createElement('input');
     const icon = document.createElement('i');
-    firstCell.appendChild(checkbox);
-    checkbox.type = "checkbox";
+    mainCheckbox.setAttribute('type', 'checkbox');
 
+    firstCell.appendChild(mainCheckbox);
     elementAppendChildren(rowElement, [firstCell, lastCell]);
     
 
     if(isTableFirstRow()) {
 
         rowElement.id = "columns-row";
-        selectAllRows(checkbox);
-
         Object.getOwnPropertyNames(table[0]).forEach(property => {
 
             const td = document.createElement('td');
@@ -173,7 +171,7 @@ function renderTableFromLocalStorage() {
         })
 
         tbody.appendChild(rowElement);
-        
+        selectAllRows(mainCheckbox);
     }
 
     const rows = table.map(data => {
@@ -195,37 +193,38 @@ function renderTableFromLocalStorage() {
     })
 
     rows.forEach(row => {
-        
-        tbody.innerHTML += row.innerHTML;
+        addEventsToRowCells();
+        tbody.insertAdjacentHTML('beforeend', row.innerHTML);
     });
 
+    addEventsToFirstRowCells(document.querySelector('#columns-row'));
+
+    global.deleteBtn.disabled = false;
 }
 
 function selectAllRows(input) {
 
     input.id = "main-checkbox";
 
-    input.onclick = e => {
+    input.onclick = function(){
 
         const allCheckbox = document.querySelectorAll('input[type = "checkbox"]');
 
         if(input.checked) {
-
             allCheckbox.forEach(checkbox => {
 
                 checkbox.checked = true;
     
             });
-
+        
         }
-            
-        if(!input.checked) {
+        else {
 
             allCheckbox.forEach(checkbox => {
 
                 checkbox.checked = false;
     
-            })
+            });
 
         }
 
@@ -358,7 +357,6 @@ function addEventsToRowCells() {
                         if(!validateInput(e.target)) {
 
                             alert(`The text in cell isn't of type ${e.target.getAttribute('data-value')}, please solve that.`);
-                            console.log("El input no es del tipo que debería ser");
 
                         }
                         else {
@@ -452,87 +450,21 @@ function addColumn(columnText, columnValue) {
 }
 
 function sortColumn(element, dataType) {
-
-    let sortableElements = [];
-    let times = 0;
-
-    const elementIndex = getIndexOfElement(document.querySelector('#columns-row').cells, element);
-
-    [].forEach.call(tbody.rows, (row, index) => {
-
-        if(isTableFirstRow(row)) {
-
-            return;
-
-        }
-
-        [].forEach.call(row.cells, (cell, index) => {
-
-            if(index === 0 || index === getIndexOfElement(row.cells, row.lastElementChild)) {
-
-                return;
-
-            }
-
-            if (index === elementIndex) {
-
-                sortableElements.push(cell);
-
-            }
-
-        })
-
-    })
-
-    if(dataType === "number"){
-
-        sortableElements = sortableElements.sort( (a, b) => {
-
-            return parseInt(a.innerText) - parseInt(b.innerText);
-
-        });
-
-    }
-    else {
-
-        sortableElements = sortableElements.sort( (a, b) => {
-
-            if (a.innerText.toLowerCase() > b.innerText.toLowerCase()) {
-              return 1;
-            }
-
-            if (a.innerText.toLowerCase() < b.innerText.toLowerCase()) {
-              return -1;
-            }
-
-            return 0;
-          }
-
-        );
-
-    }
-
-    [].forEach.call(tbody.rows, (row, rowIndex) => {
-
-        if(isTableFirstRow(row)){
-
-            return;
-
-        }
-
-        [].forEach.call(row.cells, (cell, cellIndex) => {
-
-            if (cellIndex === elementIndex) {
-                
-                row.replaceChild(sortableElements[times], cell);
-                times++;
-                return;
-            }
-
-        })
-
-    })
     
+    let infoBeforeSort = Array.from(JSON.parse(localStorage.getItem('table')));
+
+    let sortedArray = [];
+    if(element.getAttribute('data-value') === "number"){
+        sortedArray = [...infoBeforeSort].sort((a, b) => a[element.textContent].text - b[element.textContent].text);
+    }    
+    else {
+        sortedArray = [...infoBeforeSort].sort((a, b) => a[element.textContent].text > b[element.textContent].text ? 1 : -1);
+    }
+
+    localStorage.setItem('table', JSON.stringify(sortedArray));
+
+    tbody.innerHTML = "";
+    renderTableFromLocalStorage();
 }
 
 export const table = {

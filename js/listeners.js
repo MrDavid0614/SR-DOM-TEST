@@ -20,7 +20,7 @@ export function chargeListeners() {
     global.closeBtn.addEventListener('click', closeModal);
 
     global.deleteBtn.addEventListener('click', table.deleteSelectedRows)
-    
+
     window.onclick = e => {
 
         if(e.target === global.modal) {
