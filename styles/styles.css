@@ -12,6 +12,13 @@ th, td {
     text-align: center;
 }
 
+td[data-value = "email"]:not(tr#columns-row > td) {
+
+  text-decoration: underline blue;
+  color: blue;
+
+}
+
 input:focus, select:focus {
 
   outline: none;
