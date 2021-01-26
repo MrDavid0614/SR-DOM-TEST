@@ -308,7 +308,7 @@ function addEventsToFirstRowCells(firstRow) {
         cell.onclick = e => {
 
             const element = e.target;
-            sortColumn(element, element.getAttribute('data-value'));
+            sortColumn(element);
 
         }
 
@@ -449,7 +449,7 @@ function addColumn(columnText, columnValue) {
 
 }
 
-function sortColumn(element, dataType) {
+function sortColumn(element) {
     
     let infoBeforeSort = Array.from(JSON.parse(localStorage.getItem('table')));
 
