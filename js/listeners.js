@@ -1,7 +1,7 @@
 import {global} from './global.js';
 import {table} from './table.js';
 
-export function chargeListeners() {
+export default function chargeListeners() {
     
     document.onload = table.renderTableFromLocalStorage();
 
