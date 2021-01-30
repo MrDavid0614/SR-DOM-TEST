@@ -10,6 +10,7 @@ const columnType = document.querySelector('#column-type');
 const submitColumn = document.querySelector('#add-column');
 const closeBtn = document.querySelector('.close');
 
+const contextMenu = document.querySelector('#context-menu');
 
 export const global = {
 
@@ -21,6 +22,7 @@ export const global = {
     columnHeader,
     columnType,
     submitColumn,
-    closeBtn
+    closeBtn,
+    contextMenu
 
 }

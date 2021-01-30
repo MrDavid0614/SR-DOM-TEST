@@ -315,13 +315,13 @@ function addEventsToFirstRowCells(firstRow) {
         }
 
         cell.oncontextmenu = e => {
-
-            console.log(`hola ${cell.outerHTML}`);
+            e.preventDefault();
+            openContextMenu(e);
 
         };
-
+        
     })
-
+    
 }
 
 function addEventsToRowCells() {
@@ -398,12 +398,6 @@ function addEventsToRowCells() {
 
 }
 
-function getIndexOfElement(array, element) {
-    
-    return [].indexOf.call(array, element);
-
-}
-
 function addRow() {
 
     const row = document.createElement('tr');
@@ -460,6 +454,8 @@ function addColumn(columnText, columnValue) {
 
     addEventsToRowCells();
 
+    saveTableInLocalStorage(tableToJSON(tbody));
+
 }
 
 function sortColumn(element) {
@@ -478,6 +474,51 @@ function sortColumn(element) {
 
     tbody.innerHTML = "";
     renderTableFromLocalStorage();
+}
+
+function openContextMenu(event) {
+
+    drawContextMenu(event.clientX, event.clientY);
+    window.addEventListener('click', closeContextMenu);
+   
+    function drawContextMenu(positionX, positionY) {
+        
+        global.contextMenu.style.display = "block";
+        global.contextMenu.style.left = `${positionX + 10}px`;
+        global.contextMenu.style.top = `${positionY}px`;
+
+    }
+
+    document.querySelector('#btn-delete-column').onclick = (e)=> {
+        e.preventDefault();
+        deleteColumn(event);
+    };
+
+}
+
+function closeContextMenu() {
+
+    global.contextMenu.style.display = "none";
+    window.removeEventListener('click', closeContextMenu);
+}
+
+function deleteColumn(event) {
+    event.preventDefault();
+    const info = JSON.parse(localStorage.getItem('table'));
+    const arrayOfInfo = Array.from(info);
+
+    console.log(event)
+
+    arrayOfInfo.forEach(data => {
+
+        delete data[event.target.textContent];
+
+    })
+    
+    saveTableInLocalStorage(arrayOfInfo);
+    tbody.innerHTML = "";
+    renderTableFromLocalStorage();
+
 }
 
 export const table = {
