@@ -11,6 +11,7 @@ const submitColumn = document.querySelector('#add-column');
 const closeBtn = document.querySelector('.close');
 
 const contextMenu = document.querySelector('#context-menu');
+const optionsPopUp = document.querySelector('#options-popup');
 
 export const global = {
 
@@ -23,6 +24,7 @@ export const global = {
     columnType,
     submitColumn,
     closeBtn,
-    contextMenu
+    contextMenu,
+    optionsPopUp
 
 }

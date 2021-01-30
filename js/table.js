@@ -330,11 +330,23 @@ function addEventsToRowCells() {
 
         [].forEach.call(row.cells, (rowCell, index) => {
 
-            if(index === 0 || index === row.cells.length - 1) {
+            if(index === 0) {
 
                 return;
 
             }
+
+            if(index === row.cells.length - 1) {
+
+                rowCell.onclick = e => {
+
+                    if(e.target.className === "fas fa-cog")
+                        openOptionsPopUp(e);
+
+                }
+                return;
+            }
+            
 
             rowCell.onkeydown = e => {
 
@@ -483,7 +495,7 @@ function openContextMenu(event) {
    
     function drawContextMenu(positionX, positionY) {
         
-        global.contextMenu.style.display = "block";
+        global.contextMenu.style.display = "flex";
         global.contextMenu.style.left = `${positionX + 10}px`;
         global.contextMenu.style.top = `${positionY}px`;
 
@@ -507,8 +519,6 @@ function deleteColumn(event) {
     const info = JSON.parse(localStorage.getItem('table'));
     const arrayOfInfo = Array.from(info);
 
-    console.log(event)
-
     arrayOfInfo.forEach(data => {
 
         delete data[event.target.textContent];
@@ -519,6 +529,111 @@ function deleteColumn(event) {
     tbody.innerHTML = "";
     renderTableFromLocalStorage();
 
+}
+
+function openOptionsPopUp(event) {
+
+    drawOptionsPopUp(event.clientX, event.clientY);
+    window.onclick = e => {
+
+        if(e.target.className !== "fas fa-cog" && e.target.id !== "options-popup")
+            closeOptionsPopUp();
+
+    }
+    addEventsToOptions()
+
+    function drawOptionsPopUp(positionX, positionY) {
+        global.optionsPopUp.style.display = "flex";
+        global.optionsPopUp.style.left = `${positionX + 10}px`;
+        global.optionsPopUp.style.top = `${positionY}px`;
+    }
+
+    function addEventsToOptions() {
+        
+        global.optionsPopUp.onclick = (e) => {
+
+            switch (e.target.id) {
+
+                case "btn-edit":
+                    optionEdit();
+                    break;
+                
+                case "btn-copy-json":
+                    optionCopyJSON();
+                    break;
+
+                case "btn-copy-csv":
+                    optionCopyCSV();
+                    break;
+            }
+            
+        }
+
+    }
+
+    function optionEdit() {
+
+        const row = event.target.parentElement.parentElement;
+        const cells = Array.from(row.cells);
+        
+        cells.forEach((cell, index) => {
+
+            if(index === 0 || index === cells.length - 1)
+                return;
+
+            cell.setAttribute('contenteditable', 'true');
+
+        });
+        alert("Your row content is now editable");
+
+    }
+
+    function optionCopyJSON() {
+        
+        const firstRow = document.querySelector('#columns-row');
+        const firstRowCells = Array.from(firstRow.cells);
+        const row = event.target.parentElement.parentElement;
+        const rowCells = Array.from(row.cells);
+        const rowToJson = {};
+        
+        firstRowCells.forEach((cell, index) => {
+
+            if(index === 0 || index === firstRowCells.length - 1)
+                return;
+            
+            rowToJson[cell.textContent] = rowCells[index].textContent;
+
+        });
+
+        navigator.clipboard.writeText(JSON.stringify(rowToJson))
+        .then(() => alert("Your row content in JSON format is now in your clipboard"));
+
+    }
+
+    function optionCopyCSV() {
+
+        const row = event.target.parentElement.parentElement;
+        const rowCells = Array.from(row.cells);
+        const rowInfo = [];
+        
+        rowCells.forEach((cell, index) => {
+
+            if(index === 0 || index === rowCells.length - 1)
+                return;
+            
+            rowInfo.push(cell.textContent);
+
+        });
+
+        navigator.clipboard.writeText(rowInfo.join(", "))
+        .then(() => alert("Your row content in CSV format is now in your clipboard"));
+    }
+
+}
+
+function closeOptionsPopUp() {
+    global.optionsPopUp.style.display = "none";
+    document.removeEventListener('click', closeOptionsPopUp);
 }
 
 export const table = {

@@ -121,6 +121,12 @@ input:focus, select:focus {
   padding: 5px;
 }
 
+#table-container .fa-cog {
+
+  cursor: pointer;
+
+}
+
 .modal {
   display: none;
   position: fixed;
@@ -225,14 +231,16 @@ input:focus, select:focus {
   text-decoration: none;
 }
 
-.context-menu {
+.options-popup, .context-menu {
 
   display: none;
   position: absolute;
+  flex-direction: column;
   z-index: 10;
   background-color: #fbfbfb;
   padding: 10px;
   border: 1px solid #aaa;
+  align-items: center;
 
 }
 
@@ -243,5 +251,19 @@ input:focus, select:focus {
   font-size: 1.1em;
   font-family: 'Rubik', sans-serif;
   cursor: pointer;
+
+}
+
+.options-popup span {
+
+  font-size: 1.1em;
+  margin: 5px;
+  cursor: pointer;
+
+}
+
+.options-popup span:hover {
+
+  color: rgb(5, 121, 1);
 
 }
