@@ -150,7 +150,6 @@ function renderTableFromLocalStorage() {
     const firstCell = document.createElement('td');
     const lastCell = document.createElement('td');
     const mainCheckbox = document.createElement('input');
-    const icon = document.createElement('i');
     mainCheckbox.setAttribute('type', 'checkbox');
 
     firstCell.appendChild(mainCheckbox);
@@ -177,7 +176,6 @@ function renderTableFromLocalStorage() {
     const rows = table.map(data => {
         
         const row = document.createElement('tr');
-
         row.innerHTML += `<tr>
 
             <td><input type="checkbox"></input></td>
@@ -328,6 +326,9 @@ function addEventsToRowCells() {
 
     [].forEach.call(tbody.rows, row => {
 
+        if(row !== tbody.rows[0])
+            row.draggable = true;
+
         [].forEach.call(row.cells, (rowCell, index) => {
 
             if(index === 0) {
@@ -404,9 +405,12 @@ function addEventsToRowCells() {
 
                 }
             }
+
         })
 
     })
+
+    addDragEventsToRowCells();
 
 }
 
@@ -417,6 +421,8 @@ function addRow() {
     const lastCell = document.createElement('td');
     const input = document.createElement('input');
     const icon = document.createElement('i');
+    
+    row.draggable = true;
 
     if(isTableFirstRow()) { 
         row.id = "columns-row"
@@ -431,7 +437,6 @@ function addRow() {
     
     row.appendChild(checkboxCell);
     row.appendChild(lastCell);
-    // row.draggable = true;
 
     if(!isTableFirstRow()) {
 
@@ -634,6 +639,69 @@ function openOptionsPopUp(event) {
 function closeOptionsPopUp() {
     global.optionsPopUp.style.display = "none";
     document.removeEventListener('click', closeOptionsPopUp);
+}
+
+tbody.addEventListener('dragover', dragOver);
+
+function addDragEventsToRowCells() {
+    
+    const rows = Array.from(tbody.rows);
+
+    rows.forEach((row, index)=> {
+
+        if(index === 0)
+            return;
+
+        row.classList.add('draggable');
+        row.ondragstart = dragStart;
+        row.ondragend = dragEnd;
+    });
+}
+
+function dragStart(event) {
+    event.target.classList.add("dragging");
+    event.dataTransfer.setData('text', event.target);
+
+}
+
+function dragEnd(event) {
+    event.target.classList.remove("dragging");
+
+}
+
+function dragOver(event) {
+
+    event.preventDefault();
+    const draggable = tbody.querySelector('.dragging');
+    const afterElement = getDragAfterElement(event.clientY);
+
+    if(afterElement === null) {
+        tbody.appendChild(draggable);
+    }
+    else {
+        tbody.insertBefore(draggable, afterElement);
+    }
+
+    saveTableInLocalStorage(tableToJSON(tbody));
+}
+
+function getDragAfterElement(y) {
+    const draggableElements = [...tbody.querySelectorAll('.draggable:not(.dragging)')];
+
+    return draggableElements.reduce((closest, child)=>{
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+
+        if(offset < 0 && offset > closest.offset) {
+            return {offset: offset, element: child}
+        }
+        else {
+
+            return closest;
+
+        }
+
+    }, {offset: Number.NEGATIVE_INFINITY}).element;
 }
 
 export const table = {
