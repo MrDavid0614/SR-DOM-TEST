@@ -13,6 +13,8 @@ const closeBtn = document.querySelector('.close');
 const contextMenu = document.querySelector('#context-menu');
 const optionsPopUp = document.querySelector('#options-popup');
 
+const selectOptions = document.querySelector('#pag-options');
+
 export const global = {
 
     tbody,
@@ -25,6 +27,7 @@ export const global = {
     submitColumn,
     closeBtn,
     contextMenu,
-    optionsPopUp
+    optionsPopUp,
+    selectOptions
 
 }

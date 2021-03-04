@@ -1,7 +1,9 @@
 import {global} from './global.js';
+import {pagination} from './pagination.js';
 import {isEmail, isUrl} from './validator.js';
 
 const tbody = global.tbody;
+pagination.addOptionsToPagination(global.selectOptions);
 
 function isTableFirstRow(row = {}) {
 
@@ -200,6 +202,7 @@ function renderTableFromLocalStorage() {
     addEventsToFirstRowCells(document.querySelector('#columns-row'));
     addEventsToRowCells();
     global.deleteBtn.disabled = false;
+    console.log(pagination.addPagination())
 }
 
 function selectAllRows(input) {
@@ -452,7 +455,6 @@ function addRow() {
 
     addEventsToRowCells();
     saveTableInLocalStorage(tableToJSON(tbody));
-
 }
 
 function addColumn(columnText, columnValue) {
@@ -682,26 +684,26 @@ function dragOver(event) {
         tbody.insertBefore(draggable, afterElement);
     }
 
+    function getDragAfterElement(y) {
+        const draggableElements = [...tbody.querySelectorAll('.draggable:not(.dragging)')];
+
+        return draggableElements.reduce((closest, child)=>{
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+
+            if(offset < 0 && offset > closest.offset) {
+                return {offset: offset, element: child}
+            }
+            else {
+
+                return closest;
+
+            }
+
+        }, {offset: Number.NEGATIVE_INFINITY}).element;
+    }
+
     saveTableInLocalStorage(tableToJSON(tbody));
-}
-
-function getDragAfterElement(y) {
-    const draggableElements = [...tbody.querySelectorAll('.draggable:not(.dragging)')];
-
-    return draggableElements.reduce((closest, child)=>{
-        const box = child.getBoundingClientRect();
-        const offset = y - box.top - box.height / 2;
-
-        if(offset < 0 && offset > closest.offset) {
-            return {offset: offset, element: child}
-        }
-        else {
-
-            return closest;
-
-        }
-
-    }, {offset: Number.NEGATIVE_INFINITY}).element;
 }
 
 export const table = {

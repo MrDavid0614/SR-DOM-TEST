@@ -273,3 +273,70 @@ input:focus, select:focus {
   opacity: .4;
 
 }
+
+ul.pagination-list {
+
+  display: flex;
+  list-style: none;
+
+}
+
+ul.pagination-list .page-item {
+
+  border: 1px solid #aaa;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+ul.pagination-list .page-item .page-link {
+
+  text-decoration: none;
+  color: #0056b3;
+  opacity: .85;
+  font-size: 1em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  outline: none;
+
+}
+
+ul.pagination-list .page-item:hover,  ul.pagination-list .page-item .page-link:hover{
+
+  background-color: rgb(219, 219, 219);
+  opacity: 1;
+
+}
+
+ul.pagination-list .page-item.disabled, ul.pagination-list .page-item.disabled .page-link {
+
+  cursor: no-drop;
+  color: #888;
+
+}
+
+ul.pagination-list .page-item.active {
+
+  background-color: rgb(212, 212, 212);
+
+}
+
+div.pagination {
+
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+div.pagination span {
+
+  font-weight: 500;
+
+}
+
+div.pagination span input.row-input {
+
+  width: 40px;
+  text-align: center;
+
+}
